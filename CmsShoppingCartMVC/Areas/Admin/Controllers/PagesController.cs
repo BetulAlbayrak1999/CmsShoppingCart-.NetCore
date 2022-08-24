@@ -52,6 +52,7 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
        public async Task<IActionResult> Create(CreatePageDto item)
         {
             try
@@ -73,6 +74,39 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
                      var viewPage = await _pageService.CreateAsync(item);
                      if (viewPage == false)
                         return NotFound();
+                    TempData["Success"] = "The page has been added!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    foreach (var error in validationResult.Errors)
+                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                    return View(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                return View(item);
+            }
+       }
+
+        //GET/admin/pages/update
+        public IActionResult Update() => View();
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(UpdatePageDto item)
+        {
+            try
+            {
+                //validation
+                var validator = new UpdatePageDtoValidator();
+                var validationResult = validator.Validate(item);
+                if (validationResult.IsValid)
+                {
+                    var viewPage = await _pageService.UpdateAsync(item);
+                    if (viewPage == false)
+                        return BadRequest();
                     TempData["Success"] = "The page has been added!";
                     return RedirectToAction("Index");
                 }

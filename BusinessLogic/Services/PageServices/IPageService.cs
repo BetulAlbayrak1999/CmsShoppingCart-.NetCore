@@ -18,7 +18,7 @@ namespace BusinessLogic.Services.PageServices
 
         public Task<IEnumerable<GetAllPageDto>> GetAllAsync();
 
-        public Task<bool> UpdateAsync(GetPageDto item);
+        public Task<bool> UpdateAsync(UpdatePageDto item);
 
         public Task<bool> ActivateAsync(int Id);
 

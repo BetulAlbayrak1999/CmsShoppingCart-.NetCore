@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BusinessLogic.Configrations.Exceptions;
 using BusinessLogic.Dtos.PageDtos;
 using BusinessLogic.Validations.FluentValidations.Page;
 using DataAccess.Repositories.EFRepositories.PageRepositories;
@@ -55,7 +54,6 @@ namespace BusinessLogic.Services.PageServices
                 
                 if (item is not null)
                 {
-                    
                     //mapping
                     Page mappedItem = _autoMapper.Map<Page>(item);
                     mappedItem.CreatedDate = DateTime.Now;
@@ -125,9 +123,28 @@ namespace BusinessLogic.Services.PageServices
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(GetPageDto item)
+        public async Task<bool> UpdateAsync(UpdatePageDto item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var getItem = await _pageRepository.GetByIdAsync(item.Id);
+                if (item is not null && getItem is not null)
+                {
+                    //mapping
+                    Page mappedItem = _autoMapper.Map<Page>(item);
+                   
+                    bool IsUpdated = await _pageRepository.UpdateAsync(mappedItem);
+                    if (IsUpdated == true)
+                        return true;
+
+                    return false;
+                }
+
+                { return false; }
+
+            }
+            catch (Exception ex) { throw new Exception("Page Errors " + "\n" + ex.Message); }
+
         }
 
     }
