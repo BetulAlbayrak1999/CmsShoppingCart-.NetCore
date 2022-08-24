@@ -10,5 +10,6 @@ namespace DataAccess.Repositories.EFRepositories.PageRepositories
 {
     public interface IPageRepository: IBaseRepository<Page>
     {
+        public Task<Page> GetBySlugAsync(string slug);
     }
 }

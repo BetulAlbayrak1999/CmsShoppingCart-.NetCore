@@ -13,11 +13,11 @@ namespace DataAccess.Repositories.EFRepositories.BaseRepositories
 
         Task<bool> UpdateAsync(T item);
 
-        Task<bool> DeleteAsync(string Id);
+        Task<bool> DeleteAsync(int Id);
 
         Task<T> GetByAsync(Expression<Func<T, bool>> predicate = null);
 
-        Task<T> GetByIdAsync(string Id);
+        Task<T> GetByIdAsync(int Id);
 
         Task<IEnumerable<T>> GetAllByAsync(Expression<Func<T, bool>> predicate = null);
     }

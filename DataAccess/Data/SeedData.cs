@@ -24,28 +24,32 @@ namespace DataAccess.Repositories.Data
                             Title = "Home",
                             Slug = "home",
                             Content = "home page",
-                            Sorting = 0
+                            Sorting = 0,
+                            CreatedDate = DateTime.Now
                         },
                          new Page
                          {
                              Title = "About Us",
                              Slug = "about-us",
                              Content = "about us page",
-                             Sorting = 100
+                             Sorting = 100,
+                             CreatedDate = DateTime.Now
                          },
                           new Page
                           {
                               Title = "Services",
                               Slug = "services",
                               Content = "services page",
-                              Sorting = 100
+                              Sorting = 100,
+                              CreatedDate = DateTime.Now
                           },
                           new Page
                           {
                               Title = "Contact",
                               Slug = "contact",
                               Content = "contact page",
-                              Sorting = 100
+                              Sorting = 100,
+                              CreatedDate = DateTime.Now
                           }
                     );
                  context.SaveChanges();  

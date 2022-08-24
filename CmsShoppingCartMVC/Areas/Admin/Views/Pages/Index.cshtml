@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BusinessLogic.Dtos.PageDtos.PageDto>
+﻿@model IEnumerable<GetAllPageDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,16 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Title
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Slug)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sorting)
+                Slug
             </th>
         </tr>
     </thead>
@@ -30,16 +24,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+                @item.Title
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Slug)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sorting)
+                @item.Slug
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

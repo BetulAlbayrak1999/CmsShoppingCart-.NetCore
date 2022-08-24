@@ -36,7 +36,7 @@ namespace DataAccess.Repositories.EFRepositories.BaseRepositories
             catch (Exception ex) { return false; }
         }
 
-        public async Task<bool> DeleteAsync(string Id)
+        public async Task<bool> DeleteAsync(int Id)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace DataAccess.Repositories.EFRepositories.BaseRepositories
             }
         }
 
-        public virtual async Task<T> GetByIdAsync(string Id)
+        public virtual async Task<T> GetByIdAsync(int Id)
         {
             try
             {

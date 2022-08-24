@@ -15,7 +15,9 @@ namespace BusinessLogic.Mappers
         public MappingProfile()
         {
             #region Page
-            CreateMap<Page, PageDto>().ReverseMap();
+            CreateMap<Page, GetPageDto>().ReverseMap();
+            CreateMap<Page, GetAllPageDto>().ReverseMap();
+            CreateMap<Page, CreatePageDto>().ReverseMap();
             #endregion
         }
 
