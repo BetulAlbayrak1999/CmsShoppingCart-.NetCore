@@ -12,7 +12,7 @@ namespace Entity.Domains.BaseEntities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
          public bool IsActive { get; set; }
 

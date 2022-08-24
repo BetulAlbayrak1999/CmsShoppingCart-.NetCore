@@ -16,7 +16,7 @@ namespace DataAccess.Repositories.Data
             using (var context = new ApplicationDbContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
                 if (context.Pages.Any())
-                    return;
+                     return;
                 context.Pages.AddRange
                     (
                         new Page
@@ -48,7 +48,7 @@ namespace DataAccess.Repositories.Data
                               Sorting = 100
                           }
                     );
-                context.SaveChanges();  
+                 context.SaveChanges();  
             }
         }
     }
