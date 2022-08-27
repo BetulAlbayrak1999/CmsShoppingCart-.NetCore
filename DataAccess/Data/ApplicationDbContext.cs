@@ -13,5 +13,10 @@ namespace DataAccess.Repositories.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {  }
         public virtual DbSet<Page> Pages { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        }
     }
 }

@@ -18,6 +18,8 @@ namespace BusinessLogic.Mappers
             CreateMap<Page, GetPageDto>().ReverseMap();
             CreateMap<Page, GetAllPageDto>().ReverseMap();
             CreateMap<Page, CreatePageDto>().ReverseMap();
+            CreateMap<UpdatePageDto, GetPageDto>().ReverseMap();
+            CreateMap<UpdatePageDto, Page>().ReverseMap();
             #endregion
         }
 

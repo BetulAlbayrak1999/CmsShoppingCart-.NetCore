@@ -147,5 +147,25 @@ namespace BusinessLogic.Services.PageServices
 
         }
 
+
+        #region DeleteAsync
+        public async Task<bool> DeleteAsync(int Id)
+        {
+            try
+            {
+                bool IsDeleted = await _pageRepository.DeleteAsync(Id);
+                if (IsDeleted)
+                    return true;
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+               return false;    
+            }
+        }
+
+        #endregion
+
     }
 }

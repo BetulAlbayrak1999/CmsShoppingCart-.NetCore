@@ -28,5 +28,7 @@ namespace BusinessLogic.Services.PageServices
         public Task<GetPageDto> GetBySlugAsync(string slug);
 
         public Task<bool> CreateAsync(CreatePageDto item);
+
+        public Task<bool> DeleteAsync(int Id);
     }
 }
