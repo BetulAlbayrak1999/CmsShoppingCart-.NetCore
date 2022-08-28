@@ -48,7 +48,7 @@ namespace DataAccess.Repositories.EFRepositories.BaseRepositories
             catch (Exception ex) { return false; }
         }
 
-        public async Task<IEnumerable<T>> GetAllByAsync(Expression<Func<T, bool>> predicate = null)
+        public virtual async Task<IEnumerable<T>> GetAllByAsync(Expression<Func<T, bool>> predicate = null)
         {
             try
             {

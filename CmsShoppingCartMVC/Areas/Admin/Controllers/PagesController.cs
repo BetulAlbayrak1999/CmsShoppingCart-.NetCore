@@ -167,5 +167,23 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
         }
+
+        // POST /admin/pages/Reorder
+        [HttpPost]
+        public async Task<IActionResult> Reorder(int[] id)
+        {
+            try
+            {
+                bool isDone = await _pageService.RecoderAsync(id);
+                if (isDone)
+                    return Ok();
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
     }
 }

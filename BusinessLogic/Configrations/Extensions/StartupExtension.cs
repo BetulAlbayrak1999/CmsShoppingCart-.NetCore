@@ -1,5 +1,9 @@
-﻿using BusinessLogic.Services.PageServices;
+﻿using BusinessLogic.Services.CategoryServices;
+using BusinessLogic.Services.PageServices;
+using BusinessLogic.Services.ProductServices;
+using DataAccess.Repositories.EFRepositories.CategoryRepositories;
 using DataAccess.Repositories.EFRepositories.PageRepositories;
+using DataAccess.Repositories.EFRepositories.ProductRepositories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,6 +19,8 @@ namespace BusinessLogic.Configrations.Extensions
         public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IPageService, PageService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
         }
         #endregion
 
@@ -22,6 +28,8 @@ namespace BusinessLogic.Configrations.Extensions
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IPageRepository, PageRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
         #endregion
     }

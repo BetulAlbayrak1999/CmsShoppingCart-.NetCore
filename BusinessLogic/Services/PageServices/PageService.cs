@@ -167,5 +167,31 @@ namespace BusinessLogic.Services.PageServices
 
         #endregion
 
+
+        #region RecodeAsync
+        public async Task<bool> RecoderAsync(int[] id)
+        {
+            try
+            {
+                int pageNumber = 1;  //homa page gonna be 0
+                foreach(var pageId in id)
+                {
+                    Page page = await _pageRepository.GetByIdAsync(pageId);
+                    page.Sorting = pageNumber;
+                   var IsUpdated = await _pageRepository.UpdateAsync(page);
+                    if (IsUpdated)
+                    {
+                        pageNumber++;
+                        return true;
+                    }
+                }
+                return false;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+        #endregion
     }
 }

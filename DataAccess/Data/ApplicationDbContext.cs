@@ -13,6 +13,8 @@ namespace DataAccess.Repositories.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {  }
         public virtual DbSet<Page> Pages { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

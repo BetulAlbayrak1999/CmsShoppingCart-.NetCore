@@ -30,5 +30,8 @@ namespace BusinessLogic.Services.PageServices
         public Task<bool> CreateAsync(CreatePageDto item);
 
         public Task<bool> DeleteAsync(int Id);
+        
+        public Task<bool> RecoderAsync(int[] id);
+
     }
 }

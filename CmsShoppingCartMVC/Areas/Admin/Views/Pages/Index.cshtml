@@ -4,14 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Pages</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table sorting" id="pages">
     <thead>
-        <tr>
+        <tr class="home">
             <th>
                 Title
             </th>
@@ -22,7 +22,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr id="id_@item.Id" class="@item.Slug">
             <td>
                 @item.Title
             </td>
@@ -41,3 +41,19 @@
 }
     </tbody>
 </table>
+
+@section Scripts {
+  
+    <script>
+$("table#pages tbody").sortable({
+    items: "tr:not(.home)",
+    placeholder: "ui-state-highlight",
+    update: function() {
+        let ids = $("table#pages tbody").sortable("serialize");
+        let url = "/admin/pages/reorder";
+
+        $.post(url, ids, function() { });
+    }
+})
+    </script>
+}
