@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BusinessLogic.Dtos.CategoryDtos;
+using BusinessLogic.Dtos.PaginationDtos;
 using BusinessLogic.Dtos.ProductDtos;
+using BusinessLogic.Validations.ValidationAttributes;
 using DataAccess.Repositories.EFRepositories.CategoryRepositories;
 using DataAccess.Repositories.EFRepositories.ProductRepositories;
 using Entity.Domains;
@@ -34,22 +36,7 @@ namespace BusinessLogic.Services.ProductServices
         }
 
 
-        /*public async Task<GetProductDto> GetBySlugAsync(string slug)
-        {
-            try
-            {
-                var itemBySlug = await _productRepository.GetBySlugAsync(slug);
-                if (itemBySlug == null)
-                    return null;
-
-                //mapping
-                GetProductDto mappedItem = _autoMapper.Map<GetProductDto>(itemBySlug);
-
-                return mappedItem;
-            }
-            catch (Exception ex) { return null; }
-        }*/
-
+        [FileExtensionValidation] 
         public async Task<bool> CreateAsync(CreateProductDto item)
         {
             try
@@ -78,12 +65,18 @@ namespace BusinessLogic.Services.ProductServices
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<GetAllProductDto>> GetAllAsync()
+        public async Task<IEnumerable<GetAllProductDto>> GetAllAsync(PaginationParams @params)
         {
             try
             {
+                @params.PageRange = 6;
+
                 IEnumerable<Product> items = await _productRepository.GetAllByAsync();
-                IEnumerable<GetAllProductDto> result = _autoMapper.Map<IEnumerable<Product>, IEnumerable<GetAllProductDto>>(items).OrderBy(x=> x.Id);
+                IEnumerable<GetAllProductDto> result = _autoMapper.Map<IEnumerable<Product>, IEnumerable<GetAllProductDto>>(items)
+                    .OrderBy(x=> x.Id)
+                    .Skip((@params.PageNumber - 1) * @params.PageRange)
+                    .Take(@params.PageRange);
+                @params.TotalPages = (int)Math.Ceiling((decimal)items.Count()/ @params.PageRange);
 
                 return result;
             }
@@ -176,7 +169,8 @@ namespace BusinessLogic.Services.ProductServices
             try
             {
                 IEnumerable<Category> items = await _categoryRepository.GetAllByAsync();
-                IEnumerable<GetAllCategoryDto> result = _autoMapper.Map<IEnumerable<Category>, IEnumerable<GetAllCategoryDto>>(items).OrderBy(x => x.Sorting);
+                IEnumerable<GetAllCategoryDto> result = _autoMapper.Map<IEnumerable<Category>, IEnumerable<GetAllCategoryDto>>(items)
+                    .OrderBy(x => x.Sorting);
 
                 return result;
             }

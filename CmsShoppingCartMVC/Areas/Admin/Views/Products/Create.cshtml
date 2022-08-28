@@ -32,10 +32,10 @@
                     <option value="0">Choose a category</option> 
                 </select>
             </div>
-            <div class="form-group">
-                <label asp-for="ImageUpload" class="control-label"></label>
+             <div class="form-group">
+                <label asp-for="Image" class="control-label">Product Image</label>
                 <input asp-for="ImageUpload" class="form-control" />
-                <img src="" id="imgpreview" alt=""/>
+                <img src="" id="imgpreview" class="pt-2" alt="" />
                 <span asp-validation-for="ImageUpload" class="text-danger"></span>
             </div>
             

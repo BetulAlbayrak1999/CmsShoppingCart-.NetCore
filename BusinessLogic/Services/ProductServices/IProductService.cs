@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Dtos.CategoryDtos;
+using BusinessLogic.Dtos.PaginationDtos;
 using BusinessLogic.Dtos.ProductDtos;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace BusinessLogic.Services.ProductServices
         public Task<IEnumerable<GetProductDto>> GetAllUnActivatedAsync();
 
 
-        public Task<IEnumerable<GetAllProductDto>> GetAllAsync();
+        public Task<IEnumerable<GetAllProductDto>> GetAllAsync(PaginationParams @params);
         public Task<IEnumerable<GetAllCategoryDto>> GetAllCategoryAsync();
 
         public Task<bool> UpdateAsync(UpdateProductDto item);

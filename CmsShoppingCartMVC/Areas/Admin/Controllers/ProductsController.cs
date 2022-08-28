@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLogic.Dtos.PaginationDtos;
 using BusinessLogic.Dtos.ProductDtos;
 using BusinessLogic.Services.ProductServices;
 using BusinessLogic.Validations.FluentValidations.Product;
@@ -29,14 +30,22 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
         }
 
         //GET/admin/Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1)
         {
             try
             {
-                var viewProductList = await _productService.GetAllAsync();
-                if (viewProductList == null)
+                PaginationParams @params= new PaginationParams { };
+                @params.PageNumber = pageNumber;
+                var viewProductList = await _productService.GetAllAsync(@params);
+                if (viewProductList != null)
+                {
+                    ViewBag.PageNumber = @params.PageNumber;
+                    ViewBag.PageRange = @params.PageRange;
+                    ViewBag.TotalPages = @params.TotalPages; 
+                    return View(viewProductList);
+                }
                     return NotFound();
-                return View(viewProductList);
+                
             }
             catch (Exception ex)
             {
@@ -86,7 +95,7 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [FileExtensionValidation]
+        [FileExtensionValidation] //////check it again
 
         public async Task<IActionResult> Create(CreateProductDto item)
         {
@@ -118,14 +127,14 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
 
                     #region upload file
                     string imageName = "noimage.png";
-                    if(item.ImageUpload != null)
+                    if (item.ImageUpload != null)
                     {
                         string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
                         imageName = Guid.NewGuid().ToString() + "_" + item.ImageUpload.FileName;
                         string filePath = Path.Combine(uploadsDir, imageName);
-                        FileStream fileStream = new FileStream (filePath, FileMode.Create);
-                        await item.ImageUpload.CopyToAsync(fileStream);
-                        fileStream.Close();
+                        FileStream fs = new FileStream(filePath, FileMode.Create);
+                        await item.ImageUpload.CopyToAsync(fs);
+                        fs.Close();
                     }
                     #endregion
 

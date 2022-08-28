@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<GetAllProductDto>
 
 @{
-    ViewData["Title"] = "InProductsdex";
+    ViewData["Title"] = "Product";
 }
 
 <h1>Products</h1>
@@ -59,3 +59,8 @@
 }
     </tbody>
 </table>
+<div class="d-flex w-100 justify-content-center">
+    <pagination page-count="@ViewBag.TotalPages" page-target="/admin/products" page-number="@ViewBag.PageNumber" page-range="@ViewBag.PageRange"></pagination>
+</div>
+
+              

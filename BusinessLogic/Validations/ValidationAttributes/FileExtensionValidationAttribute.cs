@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Validations.ValidationAttributes
 {
-    public class FileExtensionValidationAttribute: ValidationAttribute
+    public class FileExtensionValidationAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -21,7 +21,7 @@ namespace BusinessLogic.Validations.ValidationAttributes
             {
                 var extension = Path.GetExtension(file.FileName);
 
-                string[] extensions = { "jpg", "png", "jpeg" };
+                string[] extensions = { "jpg", "png" };
                 bool result = extensions.Any(x => extension.EndsWith(x));
 
                 if (!result)
@@ -35,7 +35,7 @@ namespace BusinessLogic.Validations.ValidationAttributes
 
         private string GetErrorMessage()
         {
-            return "Allowed extensions are jpg, jpeg and png only.";
+            return "Allowed extensions are jpg and png.";
         }
     }
 }
