@@ -1,21 +1,25 @@
-﻿@model CreateProductDto
+﻿@model UpdateProductDto
 
 @{
-    ViewData["Title"] = "Create Product";
+    ViewData["Title"] = "Update";
 }
 
-<h1>Create Product</h1> 
+<h1>Update</h1>
+
+<h4>Product</h4>
 <hr />
 <div class="row">
-    <div class="col-md-10">
-        <form asp-action="Create" enctype="multipart/form-data">
+    <div class="col-md-4">
+        <form asp-action="Update" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Image" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            
+           
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                  <textarea asp-for="Description" class="form-control"></textarea>
@@ -29,14 +33,7 @@
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label">Category</label>
                 <select asp-for="CategoryId" class ="form-control" asp-items="(List<SelectListItem>)ViewBag.categories" class= "form-control">
-                    <option value="0">Choose a category</option> 
                 </select>
-            </div>
-             <div class="form-group">
-                <label asp-for="Image" class="control-label">Product Image</label>
-                <input asp-for="ImageUpload" class="form-control" />
-                <img src="" id="imgpreview" class="pt-2" alt="" />
-                <span asp-validation-for="ImageUpload" class="text-danger"></span>
             </div>
             
             <div class="form-group form-check">
@@ -45,7 +42,19 @@
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="Image" class="control-label"></label>
+                <img src="~/media/products/@Model.Image" width="200" alt=""/>
+            </div>
+          
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">New Product Image</label>
+                <input asp-for="ImageUpload" class="form-control" />
+                <img src="" id="imgpreview" class="pt-2" alt="" />
+                <span asp-validation-for="ImageUpload" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -58,8 +67,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    
-    <script>
+     <script>
         CKEDITOR.replace("Description");
 
     $("#ImageUpload").change(function() {

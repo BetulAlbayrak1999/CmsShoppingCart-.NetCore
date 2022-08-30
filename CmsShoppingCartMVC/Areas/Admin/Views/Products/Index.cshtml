@@ -40,10 +40,10 @@
             </td>
           
             <td>
-                @item.Price
+                @item.Price.ToString("C2")
             </td>
             <td>
-                @item.Image
+                <img src="~/media/products/@item.Image" width="200" alt=""/>
             </td>
             <td>
                 @item.Category.Name
@@ -52,7 +52,7 @@
                 @item.IsActive
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Update" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> | <a class="confirmDeletion" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>

@@ -26,7 +26,7 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
         {
             _productService = ProductService;
             _autoMapper = autoMapper;
-            _webHostEnvironment = webHostEnvironment;   
+            _webHostEnvironment = webHostEnvironment;
         }
 
         //GET/admin/Products
@@ -34,25 +34,25 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
         {
             try
             {
-                PaginationParams @params= new PaginationParams { };
+                PaginationParams @params = new PaginationParams { };
                 @params.PageNumber = pageNumber;
                 var viewProductList = await _productService.GetAllAsync(@params);
                 if (viewProductList != null)
                 {
                     ViewBag.PageNumber = @params.PageNumber;
                     ViewBag.PageRange = @params.PageRange;
-                    ViewBag.TotalPages = @params.TotalPages; 
+                    ViewBag.TotalPages = @params.TotalPages;
                     return View(viewProductList);
                 }
-                    return NotFound();
-                
+                return NotFound();
+
             }
             catch (Exception ex)
             {
                 return View();
             }
         }
-        
+
         //GET/admin/Products/details/6
         public async Task<IActionResult> Details(int Id)
         {
@@ -69,24 +69,26 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
             }
         }
 
+
+        #region Create
         //GET/admin/Products/create
         public async Task<IActionResult> Create()
         {
             try
             {
                 var CategoryDB = await _productService.GetAllCategoryAsync();
-                
+
                 List<SelectListItem> categories = (from x in CategoryDB
-                                                         select new SelectListItem
-                                                         {
-                                                             Text = x.Name,
-                                                             Value = x.Id.ToString()
-                                                         }).ToList();
+                                                   select new SelectListItem
+                                                   {
+                                                       Text = x.Name,
+                                                       Value = x.Id.ToString()
+                                                   }).ToList();
                 ViewBag.categories = categories;
 
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View();
             }
@@ -95,7 +97,7 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [FileExtensionValidation] //////check it again
+        [FileExtensionValidation] //check it again
 
         public async Task<IActionResult> Create(CreateProductDto item)
         {
@@ -157,12 +159,24 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
                 return View(item);
             }
         }
+        #endregion
+
+        #region Update
 
         //GET/admin/Products/update
         public async Task<IActionResult> Update(int id)
         {
             try
             {
+                var CategoryDB = await _productService.GetAllCategoryAsync();
+
+                List<SelectListItem> categories = (from x in CategoryDB
+                                                   select new SelectListItem
+                                                   {
+                                                       Text = x.Name,
+                                                       Value = x.Id.ToString()
+                                                   }).ToList();
+                ViewBag.categories = categories;
                 var item = await _productService.GetByIdAsync(id);
 
                 if (item == null)
@@ -185,6 +199,37 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
                 var validationResult = validator.Validate(item);
                 if (validationResult.IsValid)
                 {
+                    item.Slug = item.Name.ToLower().Replace(" ", "-");
+                    var itemBySlug = await _productService.GetBySlugAsync(item.Slug);
+
+                    if (itemBySlug != null && itemBySlug.Id != item.Id)
+                    {
+                        ModelState.AddModelError("", "This Product already exists");
+                        return View(item);
+                    }
+
+                    #region upload file
+                    if (item.ImageUpload != null)
+                    {
+                        string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
+                        if (!string.Equals(item.Image, "moimage.png"))
+                        {
+                            string oldImagePath = Path.Combine(uploadsDir, item.Image);
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                        }
+                        string imageName = Guid.NewGuid().ToString() + "_" + item.ImageUpload.FileName;
+                        string filePath = Path.Combine(uploadsDir, imageName);
+                        FileStream fs = new FileStream(filePath, FileMode.Create);
+                        await item.ImageUpload.CopyToAsync(fs);
+                        fs.Close();
+                        item.Image = imageName;
+                    }
+                    #endregion
+
+
                     var viewProduct = await _productService.UpdateAsync(item);
                     if (viewProduct == false)
                         return BadRequest();
@@ -204,7 +249,7 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
                 return View(item);
             }
         }
-
+        #endregion
         // GET /admin/Products/delete/5
         public async Task<IActionResult> Delete(int id)
         {
@@ -220,6 +265,15 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
                 if (viewProduct == false)
                     return BadRequest();
 
+                string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
+                if (!string.Equals(item.Image, "moimage.png"))
+                {
+                    string oldImagePath = Path.Combine(uploadsDir, item.Image);
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
                 TempData["Success"] = "The Product has been deleted!";
             }
 
