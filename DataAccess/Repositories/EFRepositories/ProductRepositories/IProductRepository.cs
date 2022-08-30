@@ -11,6 +11,8 @@ namespace DataAccess.Repositories.EFRepositories.ProductRepositories
     public interface IProductRepository : IBaseRepository<Product>
     {
         public Task<Product> GetBySlugAsync(string slug);
+        public Task<IEnumerable<Product>> GetAllProductsByCategoryAsync(string categorySlug);
+
     }
-    
+
 }

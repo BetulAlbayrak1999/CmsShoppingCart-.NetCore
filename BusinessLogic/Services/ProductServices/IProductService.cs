@@ -19,6 +19,9 @@ namespace BusinessLogic.Services.ProductServices
         public Task<IEnumerable<GetAllProductDto>> GetAllAsync(PaginationParams @params);
         public Task<IEnumerable<GetAllCategoryDto>> GetAllCategoryAsync();
 
+        public Task<IEnumerable<GetAllProductDto>> GetAllProductsByCategoryAsync(PaginationParamsWithCategoryDto @params);
+
+
         public Task<bool> UpdateAsync(UpdateProductDto item);
 
         public Task<bool> ActivateAsync(int Id);

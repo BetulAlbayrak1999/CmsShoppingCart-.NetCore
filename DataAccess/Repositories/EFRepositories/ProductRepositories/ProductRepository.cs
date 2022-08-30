@@ -39,6 +39,25 @@ namespace DataAccess.Repositories.EFRepositories.ProductRepositories
             catch(Exception ex) { return null; }
         }
 
+        public async Task<IEnumerable<Product>> GetAllProductsByCategoryAsync(string categorySlug)
+        {
+            try
+            {
+                Category category = await _context.Categories.FirstOrDefaultAsync(x => x.Slug == categorySlug);
+                if (category == null)
+                    return Enumerable.Empty<Product>();
+
+                IEnumerable<Product> products = await _context.Products
+                      .OrderByDescending(x => x.Id)
+                      .Where(x => x.CategoryId == category.Id).ToListAsync();
+
+                return products;
+
+
+            }
+            catch (Exception ex) { return null; }
+        }
+
         public async Task<Product> GetBySlugAsync(string slug)
         {
             try

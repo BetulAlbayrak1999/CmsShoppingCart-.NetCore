@@ -196,5 +196,30 @@ namespace BusinessLogic.Services.ProductServices
             }
             catch (Exception ex) { return null; }
         }
+
+        public async Task<IEnumerable<GetAllProductDto>> GetAllProductsByCategoryAsync(PaginationParamsWithCategoryDto @params)
+        {
+            try
+            {
+                @params.PageRange = 6;
+                var categoty = await _categoryRepository.GetBySlugAsync(@params.CategorySlug);
+                if (categoty is not null)
+                    @params.CategoryName = categoty.Name;
+                var products = await _productRepository.GetAllProductsByCategoryAsync(@params.CategorySlug);
+                if (products == null)
+                    return null;
+                var mappedList = _autoMapper.Map<IEnumerable<GetAllProductDto>>(products)
+                    .OrderBy(x => x.Id)
+                    .Skip((@params.PageNumber - 1) * @params.PageRange)
+                    .Take(@params.PageRange);
+                @params.TotalPages = (int)Math.Ceiling((decimal)products.Count() / @params.PageRange);
+
+                return mappedList;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }
