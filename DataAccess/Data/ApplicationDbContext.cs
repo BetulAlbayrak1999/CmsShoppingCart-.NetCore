@@ -14,6 +14,7 @@ namespace DataAccess.Repositories.Data
         {  }
         public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<CartItem> CartItems { get; set; }
         public virtual DbSet<Product> Products { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

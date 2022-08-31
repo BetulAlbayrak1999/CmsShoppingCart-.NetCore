@@ -1,6 +1,8 @@
-﻿using BusinessLogic.Services.CategoryServices;
+﻿using BusinessLogic.Services.CartItemServices;
+using BusinessLogic.Services.CategoryServices;
 using BusinessLogic.Services.PageServices;
 using BusinessLogic.Services.ProductServices;
+using DataAccess.Repositories.EFRepositories.CartItemRepositories;
 using DataAccess.Repositories.EFRepositories.CategoryRepositories;
 using DataAccess.Repositories.EFRepositories.PageRepositories;
 using DataAccess.Repositories.EFRepositories.ProductRepositories;
@@ -21,6 +23,7 @@ namespace BusinessLogic.Configrations.Extensions
             services.AddScoped<IPageService, PageService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICartItemService, CartItemService>();
         }
         #endregion
 
@@ -30,6 +33,7 @@ namespace BusinessLogic.Configrations.Extensions
             services.AddScoped<IPageRepository, PageRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
         }
         #endregion
     }

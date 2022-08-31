@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLogic.Dtos.CartItemDtos;
 using BusinessLogic.Dtos.CategoryDtos;
 using BusinessLogic.Dtos.PageDtos;
 using BusinessLogic.Dtos.ProductDtos;
@@ -39,6 +40,14 @@ namespace BusinessLogic.Mappers
             CreateMap<Product, CreateProductDto>().ReverseMap();
             CreateMap<UpdateProductDto, GetProductDto>().ReverseMap();
             CreateMap<UpdateProductDto, Product>().ReverseMap();
+            #endregion
+
+            #region CartItem
+            CreateMap<CartItem, GetCartItemDto>().ReverseMap();
+            CreateMap<CartItem, GetAllCartItemDto>().ReverseMap();
+            CreateMap<CartItem, CreateCartItemDto>().ReverseMap();
+            CreateMap<UpdateCartItemDto, GetCartItemDto>().ReverseMap();
+            CreateMap<UpdateCartItemDto, CartItem>().ReverseMap();
             #endregion
         }
 
