@@ -7,6 +7,11 @@
 @if(Model.CartItems.Count > 0)
 {
    <h1>Cart Overview</h1>
+   <div class="cartWrapper">
+       <div class="cartbg d-none">
+            <h3 class="text-center">Redirecting you to paypal...</h3>
+            <img src="~/images/ajax-loader.gif" />
+        </div>
    <table class="table">
        <tr>
            <th>Product</th>
@@ -36,11 +41,32 @@
        <tr>
             <td class="text-right" colspan="4">
                 <a asp-action="Clear" class="btn btn-danger">Clear Cart</a>
-                <a href="#" class="btn btn-primary checkout">Checkout</a>
+                <a href="#" class="btn btn-primary checkout checkout">Checkout</a>
             </td>
        </tr>
     </table>
+    </div>
 }else{
     <h3 class="display-4 text-center">Your Cart is Empty</h3>
 }
 
+<partial name="~/Views/Carts/_PayPalPartial.cshtml" for="CartItems"></partial>
+
+ @section Scripts {
+
+    <script>
+    $(function () {
+
+        $("a.checkout").click(function (e) {
+            e.preventDefault();
+
+            $("div.cartbg").removeClass("d-none");
+
+            $.get("/carts/clear", {}, function () {
+                $("form.paypalform").submit();
+            });
+            
+        });
+
+    });
+    </script>
