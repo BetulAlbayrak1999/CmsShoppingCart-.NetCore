@@ -43,11 +43,7 @@ namespace BusinessLogic.Mappers
             #endregion
 
             #region CartItem
-            CreateMap<CartItem, GetCartItemDto>().ReverseMap();
-            CreateMap<CartItem, GetAllCartItemDto>().ReverseMap();
-            CreateMap<CartItem, CreateCartItemDto>().ReverseMap();
-            CreateMap<UpdateCartItemDto, GetCartItemDto>().ReverseMap();
-            CreateMap<UpdateCartItemDto, CartItem>().ReverseMap();
+            CreateMap<CartItem, CartItemDto>().ReverseMap();
             #endregion
         }
 

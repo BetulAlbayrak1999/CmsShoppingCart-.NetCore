@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Validations.FluentValidations.CartItem
 {
-    public class UpdateCartItemDtoValidator : AbstractValidator<UpdateCartItemDto>
+    public class CartItemDtoValidator : AbstractValidator<CartItemDto>
     {
-        public UpdateCartItemDtoValidator()
+        public CartItemDtoValidator()
         {
         }
     }

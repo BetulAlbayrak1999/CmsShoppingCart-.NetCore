@@ -10,76 +10,27 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Configrations.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using DataAccess.Repositories.EFRepositories.ProductRepositories;
+using BusinessLogic.Dtos.ProductDtos;
+
 namespace BusinessLogic.Services.CartItemServices
 {
     public class CartItemService : ICartItemService
     {
         #region Field and Ctor
         private readonly ICartItemRepository _cartItemRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IMapper _autoMapper;
-        public CartItemService(ICartItemRepository CartItemRepository, IMapper autoMapper)
+        public CartItemService(ICartItemRepository CartItemRepository, IProductRepository ProductRepository, IMapper autoMapper)
         {
             _cartItemRepository = CartItemRepository;
             _autoMapper = autoMapper;
+            _productRepository = ProductRepository; 
         }
         #endregion
 
 
-        public Task<bool> ActivateAsync(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public async Task<bool> CreateAsync(CreateCartItemDto item)
-        {
-            try
-            {
-
-                if (item is not null)
-                {
-                    //mapping
-                    CartItem mappedItem = _autoMapper.Map<CartItem>(item);
-                    mappedItem.CreatedDate = DateTime.Now;
-                    var IsCreated = await _cartItemRepository.CreateAsync(mappedItem);
-                    if (IsCreated == true)
-                        return true;
-                    return false;
-                }
-
-                { return false; }
-
-            }
-            catch (Exception ex) { throw new Exception("CartItem Errors " + "\n" + ex.Message); }
-
-        }
-
-        public Task<IEnumerable<GetCartItemDto>> GetAllActivatedAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<GetAllCartItemDto>> GetAllAsync()
-        {
-            try
-            {
-                IEnumerable<CartItem> items = await _cartItemRepository.GetAllByAsync();
-                IEnumerable<GetAllCartItemDto> result = _autoMapper.Map<IEnumerable<CartItem>, IEnumerable<GetAllCartItemDto>>(items);
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
-        public Task<IEnumerable<GetCartItemDto>> GetAllUnActivatedAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<GetCartItemDto> GetByIdAsync(int Id)
+        public async Task<CartItemDto> GetByIdAsync(int Id)
         {
             try
             {
@@ -89,7 +40,7 @@ namespace BusinessLogic.Services.CartItemServices
                     if (item is not null)
                     {
                         //mapping
-                        GetCartItemDto mappedItem = _autoMapper.Map<GetCartItemDto>(item);
+                        CartItemDto mappedItem = _autoMapper.Map<CartItemDto>(item);
 
                         return mappedItem;
                     }
@@ -102,12 +53,8 @@ namespace BusinessLogic.Services.CartItemServices
             catch (Exception ex) { return null; }
         }
 
-        public Task<bool> UnActivateAsync(int Id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public async Task<bool> UpdateAsync(UpdateCartItemDto item)
+        public async Task<bool> UpdateAsync(CartItemDto item)
         {
             try
             {
@@ -148,6 +95,54 @@ namespace BusinessLogic.Services.CartItemServices
                 return false;
             }
         }
+
+        public async Task<GetProductDto> GetProductByIdAsync(int productId)
+        {
+            try
+            {
+                if (productId > 0)
+                {
+                    Product item = await _productRepository.GetByIdAsync(productId);
+                    if (item is not null)
+                    {
+                        //mapping
+                        GetProductDto mappedItem = _autoMapper.Map<GetProductDto>(item);
+
+                        return mappedItem;
+                    }
+                    return null;
+                }
+
+                { return null; }
+
+            }
+            catch (Exception ex) { return null; }
+        }
+
+
         #endregion
+
+        public async Task<CartItemDto> GetCartItemByProductIdAsync(int productId)
+        {
+            try
+            {
+                if (productId > 0)
+                {
+                    CartItem item = await _cartItemRepository.GetCartItemByProductIdAsync(productId);
+                    if (item is not null)
+                    {
+                        //mapping
+                        CartItemDto mappedItem = _autoMapper.Map<CartItemDto>(item);
+
+                        return mappedItem;
+                    }
+                    return null;
+                }
+
+                { return null; }
+
+            }
+            catch (Exception ex) { return null; }
+        }
     }
 }

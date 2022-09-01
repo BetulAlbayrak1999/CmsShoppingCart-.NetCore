@@ -9,7 +9,7 @@ namespace BusinessLogic.ViewModels.CartItemViewModels
 {
     public class CartItemVM
     {
-        public List<GetCartItemDto> CartItems { get; set; }
+        public List<CartItemDto> CartItems { get; set; }
 
         public decimal GrandTotal { get; set;}
     }

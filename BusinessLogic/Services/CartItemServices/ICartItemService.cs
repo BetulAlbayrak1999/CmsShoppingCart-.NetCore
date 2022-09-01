@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Dtos.CartItemDtos;
+using BusinessLogic.Dtos.ProductDtos;
 using BusinessLogic.ViewModels.CartItemViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,22 +11,13 @@ namespace BusinessLogic.Services.CartItemServices
 {
     public interface ICartItemService
     {
-        public Task<IEnumerable<GetCartItemDto>> GetAllActivatedAsync();
+        
+        public Task<bool> UpdateAsync(CartItemDto item);
 
-        public Task<IEnumerable<GetCartItemDto>> GetAllUnActivatedAsync();
+        public Task<CartItemDto> GetByIdAsync(int Id);
+        public Task<CartItemDto> GetCartItemByProductIdAsync(int productId);
 
-
-        public Task<IEnumerable<GetAllCartItemDto>> GetAllAsync();
-
-        public Task<bool> UpdateAsync(UpdateCartItemDto item);
-
-        public Task<bool> ActivateAsync(int Id);
-
-        public Task<bool> UnActivateAsync(int Id);
-
-        public Task<GetCartItemDto> GetByIdAsync(int Id);
-
-        public Task<bool> CreateAsync(CreateCartItemDto item);
+        public Task<GetProductDto> GetProductByIdAsync(int productId);
 
         public Task<bool> DeleteAsync(int Id);
 

@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Dtos.CartItemDtos
 {
-    public class GetCartItemDto
+    public class CartItemDto
     {
         public int Id { get; set; }
-        public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; }
@@ -19,11 +18,12 @@ namespace BusinessLogic.Dtos.CartItemDtos
         public decimal Total { get { return Quantity * Price; } }
         public string Image { get; set; }
 
-        public GetCartItemDto()
+        public CartItemDto()
         {
+            ProductId = Id;
         }
 
-        public GetCartItemDto(GetProductDto product)
+        public CartItemDto(GetProductDto product)
         {
             ProductId = product.Id;
             ProductName = product.Name;
