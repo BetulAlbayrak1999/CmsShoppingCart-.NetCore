@@ -72,7 +72,83 @@ namespace CmsShoppingCartMVC.Controllers
                 }
 
                 HttpContext.Session.SetJson("Cart", cart);
+
+                if (HttpContext.Request.Headers["X-Requested-With"] != "XMLHttpRequest")
+                    return RedirectToAction("Index");
+
+                return ViewComponent("SmallCart");
+            }
+            catch (Exception ex) { return View(); }
+        }
+
+
+        // GET /carts/decrease/5
+        public IActionResult Decrease([FromRoute] int productId)
+        {
+            try
+            {
+                if (productId == 0)
+                    return NotFound();
+
+                List<CartItemDto> cart = HttpContext.Session.GetJson<List<CartItemDto>>("Cart") ?? new List<CartItemDto>();
+
+                var cartItem = cart.Where(x => x.ProductId == productId).FirstOrDefault();
+
+                if (cartItem.Quantity > 1)
+                    --cartItem.Quantity;
+
+                else
+                    cart.RemoveAll(x=> x.ProductId == productId);
+                
+
+               
+                if (cart.Count == 0)
+                    HttpContext.Session.Remove("Cart");
+                else
+                    HttpContext.Session.SetJson("Cart", cart);
+
                 return RedirectToAction("Index");
+            }
+            catch (Exception ex) { return View(); }
+        }
+
+        // GET /carts/remove/5
+        public IActionResult Remove([FromRoute] int productId)
+        {
+            try
+            {
+                if (productId == 0)
+                    return NotFound();
+
+                List<CartItemDto> cart = HttpContext.Session.GetJson<List<CartItemDto>>("Cart") ?? new List<CartItemDto>();
+
+                cart.RemoveAll(x => x.ProductId == productId);
+
+
+                if (cart.Count == 0)
+                    HttpContext.Session.Remove("Cart");
+                else
+                    HttpContext.Session.SetJson("Cart", cart);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex) { return View(); }
+        }
+
+        // GET /carts/clear
+        [Route("[action]")]
+        public IActionResult Clear()
+        {
+            try
+            { 
+                HttpContext.Session.Remove("Cart");
+
+                //return RedirectToAction("Page", "Pages"); 
+                //return Redirect("/"); //go to root
+                if (HttpContext.Request.Headers["X-Requested-With"] != "XMLHttpRequest")//to previous page
+                    return Redirect(Request.Headers["Referer"].ToString());
+
+                return Ok();
             }
             catch (Exception ex) { return View(); }
         }

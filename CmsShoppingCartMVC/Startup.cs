@@ -97,6 +97,17 @@ namespace CmsShoppingCartMVC
                 );
 
                 endpoints.MapControllerRoute(
+                   "Carts",
+                   "Carts/Decrease/{ProductId}",
+                   new { controller = "Carts", action = "Decrease" }
+               );
+                endpoints.MapControllerRoute(
+                   "Carts",
+                   "Carts/Remove/{ProductId}",
+                   new { controller = "Carts", action = "Remove" }
+               );
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
