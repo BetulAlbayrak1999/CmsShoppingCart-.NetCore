@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using BusinessLogic.Configrations.Extensions;
 using BusinessLogic.Dtos.CartItemDtos;
-using BusinessLogic.Services.CartItemServices;
-using BusinessLogic.ViewModels.CartItemViewModels;
+using BusinessLogic.Services.CartServices;
+using BusinessLogic.ViewModels.CartViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,12 +13,12 @@ namespace CmsShoppingCartMVC.Controllers
 {
     public class CartsController : Controller
     {
-        private readonly ICartItemService _cartItemService;
+        private readonly ICartService _cartService;
         private readonly IMapper _autoMapper;
 
-        public CartsController(ICartItemService CartItemService, IMapper autoMapper)
+        public CartsController(ICartService CartService, IMapper autoMapper)
         {
-            _cartItemService = CartItemService;
+            _cartService = CartService;
             _autoMapper = autoMapper;
         }
 
@@ -30,13 +30,13 @@ namespace CmsShoppingCartMVC.Controllers
             {
                 List<CartItemDto> cart = HttpContext.Session.GetJson<List<CartItemDto>>("Cart") ?? new List<CartItemDto>();
 
-                CartItemVM cartItemVM = new CartItemVM
+                CartVM cartVM = new CartVM
                 {
                     CartItems = cart,
                     GrandTotal = cart.Sum(x => x.Price * x.Quantity)
                 };
-                if(cartItemVM is not null)
-                    return View(cartItemVM);
+                if(cartVM is not null)
+                    return View(cartVM);
                 return NotFound();
 
             }
@@ -55,19 +55,20 @@ namespace CmsShoppingCartMVC.Controllers
                 if (productId == 0)
                     return NotFound();
 
-                var product = await _cartItemService.GetProductByIdAsync(productId);
+                var product = await _cartService.GetProductByIdAsync(productId);
                 if (product is null)
                     return NotFound();
 
                 List<CartItemDto> cart = HttpContext.Session.GetJson<List<CartItemDto>>("Cart") ?? new List<CartItemDto>();
                 
-                var cartItem = await _cartItemService.GetCartItemByProductIdAsync(productId);
+                var cartItem = cart.Where(x => x.ProductId == productId).FirstOrDefault();
+
                 if (cartItem is null)
                     cart.Add(new CartItemDto(product));
                
                 else
                 {
-                    cartItem.Quantity = 1;
+                    cartItem.Quantity += 1;
                 }
 
                 HttpContext.Session.SetJson("Cart", cart);

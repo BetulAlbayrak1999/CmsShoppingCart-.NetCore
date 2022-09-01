@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLogic.Dtos.CartItemDtos;
-using BusinessLogic.ViewModels.CartItemViewModels;
-using DataAccess.Repositories.EFRepositories.CartItemRepositories;
+using DataAccess.Repositories.EFRepositories.CartRepositories;
 using Entity.Domains;
 using System;
 using System.Collections.Generic;
@@ -13,17 +12,17 @@ using Microsoft.AspNetCore.Mvc;
 using DataAccess.Repositories.EFRepositories.ProductRepositories;
 using BusinessLogic.Dtos.ProductDtos;
 
-namespace BusinessLogic.Services.CartItemServices
+namespace BusinessLogic.Services.CartServices
 {
-    public class CartItemService : ICartItemService
+    public class CartService : ICartService
     {
         #region Field and Ctor
-        private readonly ICartItemRepository _cartItemRepository;
+        private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
         private readonly IMapper _autoMapper;
-        public CartItemService(ICartItemRepository CartItemRepository, IProductRepository ProductRepository, IMapper autoMapper)
+        public CartService(ICartRepository CartItemRepository, IProductRepository ProductRepository, IMapper autoMapper)
         {
-            _cartItemRepository = CartItemRepository;
+            _cartRepository = CartItemRepository;
             _autoMapper = autoMapper;
             _productRepository = ProductRepository; 
         }
@@ -36,7 +35,7 @@ namespace BusinessLogic.Services.CartItemServices
             {
                 if (Id > 0)
                 {
-                    CartItem item = await _cartItemRepository.GetByIdAsync(Id);
+                    CartItem item = await _cartRepository.GetByIdAsync(Id);
                     if (item is not null)
                     {
                         //mapping
@@ -58,13 +57,13 @@ namespace BusinessLogic.Services.CartItemServices
         {
             try
             {
-                var getItem = await _cartItemRepository.GetByIdAsync(item.Id);
+                var getItem = await _cartRepository.GetByIdAsync(item.Id);
                 if (item is not null && getItem is not null)
                 {
                     //mapping
                     CartItem mappedItem = _autoMapper.Map<CartItem>(item);
 
-                    bool IsUpdated = await _cartItemRepository.UpdateAsync(mappedItem);
+                    bool IsUpdated = await _cartRepository.UpdateAsync(mappedItem);
                     if (IsUpdated == true)
                         return true;
 
@@ -84,7 +83,7 @@ namespace BusinessLogic.Services.CartItemServices
         {
             try
             {
-                bool IsDeleted = await _cartItemRepository.DeleteAsync(Id);
+                bool IsDeleted = await _cartRepository.DeleteAsync(Id);
                 if (IsDeleted)
                     return true;
 
@@ -122,13 +121,13 @@ namespace BusinessLogic.Services.CartItemServices
 
         #endregion
 
-        public async Task<CartItemDto> GetCartItemByProductIdAsync(int productId)
+        /*public async Task<CartItemDto> GetCartItemByProductIdAsync(int productId)
         {
             try
             {
                 if (productId > 0)
                 {
-                    CartItem item = await _cartItemRepository.GetCartItemByProductIdAsync(productId);
+                    CartItem item = await _cartRepository.GetCartItemByProductIdAsync(productId);
                     if (item is not null)
                     {
                         //mapping
@@ -143,6 +142,6 @@ namespace BusinessLogic.Services.CartItemServices
 
             }
             catch (Exception ex) { return null; }
-        }
+        }*/
     }
 }

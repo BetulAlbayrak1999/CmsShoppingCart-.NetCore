@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.ViewModels.CartItemViewModels
+namespace BusinessLogic.ViewModels.CartViewModels
 {
-    public class CartItemVM
+    public class CartVM
     {
         public List<CartItemDto> CartItems { get; set; }
 

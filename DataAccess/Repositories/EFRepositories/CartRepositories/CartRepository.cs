@@ -8,17 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Repositories.EFRepositories.CartItemRepositories
+namespace DataAccess.Repositories.EFRepositories.CartRepositories
 {
-    public class CartItemRepository : BaseRepository<CartItem>, ICartItemRepository
+    public class CartRepository : BaseRepository<CartItem>, ICartRepository
     {
         private readonly ApplicationDbContext _context;
-        public CartItemRepository(ApplicationDbContext context) : base(context)
+        public CartRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public async Task<CartItem> GetCartItemByProductIdAsync(int productId)
+        /*public async Task<CartItem> GetCartItemByProductIdAsync(int productId)
         {
             try
             {
@@ -28,6 +28,6 @@ namespace DataAccess.Repositories.EFRepositories.CartItemRepositories
                 return item;
             }
             catch (Exception ex) { return null; }
-        }
+        }*/
     }
 }

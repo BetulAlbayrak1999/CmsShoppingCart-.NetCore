@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Repositories.EFRepositories.CartItemRepositories
+namespace DataAccess.Repositories.EFRepositories.CartRepositories
 {
-    public interface ICartItemRepository : IBaseRepository<CartItem>
+    public interface ICartRepository : IBaseRepository<CartItem>
     {
-        public Task<CartItem> GetCartItemByProductIdAsync(int productId);
+        //public Task<CartItem> GetCartItemByProductIdAsync(int productId);
     }
 }

@@ -10,7 +10,6 @@ namespace BusinessLogic.Dtos.CartItemDtos
     public class CartItemDto
     {
         public int Id { get; set; }
-        public DateTime CreatedDate { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public int Quantity { get; set; }
@@ -20,7 +19,6 @@ namespace BusinessLogic.Dtos.CartItemDtos
 
         public CartItemDto()
         {
-            ProductId = Id;
         }
 
         public CartItemDto(GetProductDto product)
