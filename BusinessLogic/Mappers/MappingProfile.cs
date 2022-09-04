@@ -42,6 +42,12 @@ namespace BusinessLogic.Mappers
             CreateMap<UpdateProductDto, Product>().ReverseMap();
             #endregion
 
+            #region User
+           
+            CreateMap<User, AppUser>().ReverseMap();
+            #endregion
+
+
             #region CartItem
             CreateMap<CartItem, CartItemDto>().ReverseMap();
             #endregion

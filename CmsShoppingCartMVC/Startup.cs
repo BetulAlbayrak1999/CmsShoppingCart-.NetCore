@@ -2,9 +2,11 @@ using AutoMapper;
 using BusinessLogic.Configrations.Extensions;
 using BusinessLogic.Mappers;
 using DataAccess.Repositories.Data;
+using Entity.Domains;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +38,16 @@ namespace CmsShoppingCartMVC
             });
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<AppUser, IdentityRole>(options => {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+            })
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddDefaultTokenProviders();
 
             // Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>
@@ -69,6 +81,8 @@ namespace CmsShoppingCartMVC
             app.UseRouting();
 
             app.UseSession();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
@@ -105,6 +119,12 @@ namespace CmsShoppingCartMVC
                    "Carts",
                    "Carts/Remove/{ProductId}",
                    new { controller = "Carts", action = "Remove" }
+               );
+
+                endpoints.MapControllerRoute(
+                   "Carts",
+                   "Carts/Clear",
+                   new { controller = "Carts", action = "Clear" }
                );
 
                 endpoints.MapControllerRoute(
