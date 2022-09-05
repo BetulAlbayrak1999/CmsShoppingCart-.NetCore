@@ -1,7 +1,9 @@
-﻿using Entity.Domains;
+﻿using BusinessLogic.ViewModels.RoleViewModels;
+using Entity.Domains;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -53,5 +55,63 @@ namespace CmsShoppingCartMVC.Areas.Admin.Controllers
                 return BadRequest();
             }
         }
+
+        //GET /admin/roles/update/5
+        public async Task<IActionResult> Update(string id)
+        {
+            try
+            {
+                IdentityRole role = await _roleManager.FindByIdAsync(id);
+                if (role is not null)
+                {
+                    List<AppUser> members = new List<AppUser>();
+                    List<AppUser> nonMembers = new List<AppUser>();
+                    foreach (AppUser user in _userManager.Users) {
+                        var list = await _userManager.IsInRoleAsync(user, role.Name)? members: nonMembers;
+                        list.Add(user);
+                    }
+                    return View(new UpdateRoleVM
+                    {
+                        Role = role,
+                        Members = members,
+                        NonMembers = nonMembers
+                    });
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        //POST /admin/roles/update/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(UpdateRoleVM updateRoleVM)
+        {
+            try
+            {
+                IdentityResult result;
+                foreach (string userId in updateRoleVM.AddIds?? new string[] {}) 
+                {
+                    AppUser user = await _userManager.FindByIdAsync(userId);
+                    result = await _userManager.AddToRoleAsync(user, updateRoleVM.RoleName);
+                }
+
+                foreach (string userId in updateRoleVM.DeleteIds?? new string[] {}) 
+                {
+                    AppUser user = await _userManager.FindByIdAsync(userId);
+                    result = await _userManager.RemoveFromRoleAsync(user, updateRoleVM.RoleName);
+                }
+
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }
