@@ -2,12 +2,14 @@
 using BusinessLogic.Dtos.CategoryDtos;
 using BusinessLogic.Services.CategoryServices;
 using BusinessLogic.Validations.FluentValidations.Category;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace CmsShoppingCartMVC.Areas.Admin.Controllers
 {
+    [Authorize(Roles="admin")]
     [Area("Admin")]
     public class CategoriesController : Controller
     {

@@ -27,8 +27,14 @@
                             <a asp-controller="Accounts" asp-action="Logout" class="btn btn-danger">Hi, @User.Identity.Name, Log out</a>
                         </ul>
 
+                        @if (User.IsInRole("admin"))
+                        {
+                            <ul class="nav-item ml-1">
+                                <a asp-area="Admin" asp-controller="Pages" asp-action="Index" class="btn btn-success">Admin Area</a>
+                            </ul>
+                        }
                         <ul class="nav-item ml-1">
-                            <a asp-controller="Accounts" asp-action="Update" class="btn btn-danger">My Account</a>
+                            <a asp-controller="Accounts" asp-action="Update" class="btn btn-primary">My Account</a>
                         </ul>
                     }else{
                          <ul class="navbar-nav flex-grow-1 justify-content-end">

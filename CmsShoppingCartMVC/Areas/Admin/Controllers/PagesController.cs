@@ -2,12 +2,14 @@
 using BusinessLogic.Dtos.PageDtos;
 using BusinessLogic.Services.PageServices;
 using BusinessLogic.Validations.FluentValidations.Page;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace CmsShoppingCartMVC.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Area("Admin")]
     public class PagesController : Controller
     {

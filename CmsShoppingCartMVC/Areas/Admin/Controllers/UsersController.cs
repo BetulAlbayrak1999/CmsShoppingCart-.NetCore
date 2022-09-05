@@ -6,7 +6,7 @@ using System;
 
 namespace CmsShoppingCartMVC.Areas.Admin.Controllers
 {
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [Area("Admin")]
     public class UsersController : Controller
     {

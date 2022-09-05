@@ -4,6 +4,7 @@ using BusinessLogic.Dtos.ProductDtos;
 using BusinessLogic.Services.ProductServices;
 using BusinessLogic.Validations.FluentValidations.Product;
 using BusinessLogic.Validations.ValidationAttributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace CmsShoppingCartMVC.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Area("Admin")]
     public class ProductsController : Controller
     {
