@@ -20,12 +20,34 @@
                     <ul class="navbar-nav flex-grow-1">
                        @await Component.InvokeAsync("MainMenu")
                     </ul>
+
+                    @if(User?.Identity?.IsAuthenticated?? false)
+                    {
+                        <ul class="nav-item">
+                            <a asp-controller="Accounts" asp-action="Logout" class="btn btn-danger">Hi, @User.Identity.Name, Log out</a>
+                        </ul>
+
+                        <ul class="nav-item ml-1">
+                            <a asp-controller="Accounts" asp-action="Update" class="btn btn-danger">My Account</a>
+                        </ul>
+                    }else{
+                         <ul class="navbar-nav flex-grow-1 justify-content-end">
+                        <li class="nav-item">
+                            <a asp-controller="Accounts" asp-action="Login" class="btn btn-success">Log in</a>
+                        </li>
+                        <li class="nav-item ml-1">
+                            <a asp-controller="Accounts" asp-action="Register" class="btn btn-primary">Register</a>
+                        </li>
+                    </ul>
+                    }
+                   
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <partial name="_NotificationPartial"></partial>
             <div class="row">
                 <div class="col-3">
                     @await Component.InvokeAsync("Categories")

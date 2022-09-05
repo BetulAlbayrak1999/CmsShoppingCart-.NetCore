@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using BusinessLogic.Dtos.PaginationDtos;
 using BusinessLogic.Services.ProductServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace CmsShoppingCartMVC.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IProductService _productService;
