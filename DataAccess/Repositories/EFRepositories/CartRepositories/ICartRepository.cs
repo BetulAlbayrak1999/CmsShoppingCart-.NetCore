@@ -10,6 +10,6 @@ namespace DataAccess.Repositories.EFRepositories.CartRepositories
 {
     public interface ICartRepository : IBaseRepository<CartItem>
     {
-        //public Task<CartItem> GetCartItemByProductIdAsync(int productId);
+
     }
 }

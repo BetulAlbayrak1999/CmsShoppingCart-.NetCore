@@ -27,6 +27,7 @@ namespace BusinessLogic.Configrations.Extensions
         }
         #endregion
 
+
         #region AddRepositories
         public static void AddRepositories(this IServiceCollection services)
         {
